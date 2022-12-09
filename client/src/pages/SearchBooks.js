@@ -5,6 +5,9 @@ import Auth from '../utils/auth';
 import { saveBook, searchGoogleBooks } from '../utils/API';
 import { saveBookIds, getSavedBookIds } from '../utils/localStorage';
 
+import { SAVE_BOOK } from '../utils/mutations';
+import { useMutation } from '@apollo/react-hooks';
+
 const SearchBooks = () => {
   // create state for holding returned google api data
   const [searchedBooks, setSearchedBooks] = useState([]);
@@ -65,7 +68,9 @@ const SearchBooks = () => {
     }
 
     try {
-      const response = await saveBook(bookToSave, token);
+      const response = await saveBook({
+        variables: { input: bookToSave },
+      });
 
       if (!response.ok) {
         throw new Error('something went wrong!');
@@ -124,12 +129,17 @@ const SearchBooks = () => {
                   <Card.Text>{book.description}</Card.Text>
                   {Auth.loggedIn() && (
                     <Button
-                      disabled={savedBookIds?.some((savedBookId) => savedBookId === book.bookId)}
-                      className='btn-block btn-info'
-                      onClick={() => handleSaveBook(book.bookId)}>
-                      {savedBookIds?.some((savedBookId) => savedBookId === book.bookId)
-                        ? 'This book has already been saved!'
-                        : 'Save this Book!'}
+                    disabled={savedBookIds?.some(
+                      (savedBookId) => savedBookId === book.bookId
+                    )}
+                    className="btn-block btn-info"
+                    onClick={() => handleSaveBook(book.bookId)}
+                  >
+                    {savedBookIds?.some(
+                      (savedBookId) => savedBookId === book.bookId
+                    )
+                      ? "This book has already been saved!"
+                      : "Save this Book!"}
                     </Button>
                   )}
                 </Card.Body>
