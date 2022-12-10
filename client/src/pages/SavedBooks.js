@@ -78,6 +78,5 @@ import { removeBookId } from '../utils/localStorage';
       </Container>
     </>
   );
-};
 
 export default SavedBooks;
