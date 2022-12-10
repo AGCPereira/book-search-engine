@@ -1,18 +1,13 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { Jumbotron, Container, CardColumns, Card, Button } from 'react-bootstrap';
 
-import { useQuery, useMutation } from '@apollo/react-hooks';
+
 import{ GET_ME } from '../utils/queries';
 import { REMOVE_BOOK } from '../utils/mutations';
 
+import { useQuery, useMutation } from '@apollo/react-hooks';
 import Auth from '../utils/auth';
 import { removeBookId } from '../utils/localStorage';
-
-const SavedBooks = () => {
-  const { loading, data } = useQuery(GET_ME);
-  let userData = data?.me || {};
-  console.log(userData);
-  const [removeBook] = useMutation(REMOVE_BOOK);
 
   // use this to determine if `useEffect()` hook needs to run again
   const { loading, data } = useQuery(GET_ME);
@@ -42,14 +37,13 @@ const SavedBooks = () => {
   };
 
   // if data isn't here yet, say so
-  if (!loading) {
+  if (loading) {
     return <h2>LOADING...</h2>;
     
   }
 
     //const savedBookIds = userData.savedBooks.map((book) => book.bookId);
   //saveBookIds(savedBookIds);
-  }
 
   return (
     <>
